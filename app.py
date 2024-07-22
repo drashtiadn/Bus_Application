@@ -1,4 +1,4 @@
-from flask import Flask, request
+from fastapi import FastAPI, request
 from langchain_community.llms import Ollama
 from langchain_community.vectorstores import Chroma
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -8,7 +8,7 @@ from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains import create_retrieval_chain
 from langchain.prompts import PromptTemplate
 
-app = Flask(__name__)
+app = FastAPI()
 
 folder_path = "db"
 
@@ -27,11 +27,11 @@ raw_prompt = PromptTemplate.from_template(
            Context: {context}
            Answer:
     [/INST]
-"""
+    """
 )
 
 
-@app.route("/ai", methods=["POST"])
+@app.post("/ai/")
 def aiPost():
     print("Post /ai called")
     json_content = request.json
@@ -46,7 +46,7 @@ def aiPost():
     return response_answer
 
 
-@app.route("/ask_pdf", methods=["POST"])
+@app.post("/ask_pdf/")
 def askPDFPost():
     print("Post /ask_pdf called")
     json_content = request.json
@@ -83,7 +83,7 @@ def askPDFPost():
     return response_answer
 
 
-@app.route("/pdf", methods=["POST"])
+@app.post("/pdf/")
 def pdfPost():
     file = request.files["file"]
     file_name = file.filename
