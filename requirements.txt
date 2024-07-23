@@ -1,2 +1,5 @@
 chromadb
 langchain
+Ollama
+fastapi
+uvicorn
